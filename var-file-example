@@ -1,0 +1,8 @@
+{
+    "proxmox_username":"packer-user@pve",
+    "proxmox_password":"packer-password",
+    "proxmox_url": "https://proxmoxip:8006/api2/json",
+    "ssh_user": "rene",
+    "ssh_pass": "password"
+}
+
