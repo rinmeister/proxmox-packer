@@ -1,0 +1,57 @@
+{
+  "variables": {
+    "proxmox_vm_id": "303",
+    "proxmox_template_name": "ubuntu-20.04-3",
+    "ubuntu_iso_file": "ubuntu-20.04.4-live-server-amd64.iso"
+  },
+  "builders": [{
+    "type": "proxmox",
+    "proxmox_url": "{{ user `proxmox_url` }}",
+    "username": "{{ user `proxmox_username` }}",
+    "password": "{{ user `proxmox_password` }}",
+    "node": "voldemort",
+    "insecure_skip_tls_verify": true,
+    "vm_id": "{{ user `proxmox_vm_id` }}",
+    "network_adapters": [{
+      "model": "virtio",
+      "bridge": "vmbr1",
+      "vlan_tag": "220",
+      "firewall": true
+    }],
+    "disks": [{
+      "type": "scsi",
+      "disk_size": "20G",
+      "storage_pool": "local-lvm",
+      "storage_pool_type": "lvm"
+    }],
+    "iso_file": "local:iso/{{ user `ubuntu_iso_file` }}",
+    "unmount_iso": true,
+    "boot_wait": "6s",
+    "memory": 1024,
+    "template_name": "{{ user `proxmox_template_name` }}",
+    "http_directory": "http",
+    "boot_command": [
+      "<esc><wait><esc><wait><f6><wait><esc><wait>",
+      "<bs><bs><bs><bs><bs>",
+      "autoinstall ds=nocloud-net;s=http://10.1.0.129:8000/ ",
+      "--- <enter>"
+    ],
+    "ssh_username": "{{ user `ssh_user` }}",
+    "ssh_password": "{{ user `ssh_pass` }}",
+    "ssh_timeout": "40m"
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done"
+    ]
+  },
+  {
+    "type": "shell",
+    "inline": [
+        "sudo truncate -s 0 /etc/machine-id",
+        "sudo rm /var/lib/dbus/machine-id",
+        "sudo ln -s /etc/machine-id /var/lib/dbus/machine-id"
+    ]
+  }]
+}
