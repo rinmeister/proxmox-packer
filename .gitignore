@@ -1,1 +1,3 @@
 .var-file
+variables.pkr.hcl
+ubuntu.pkr.hcl
