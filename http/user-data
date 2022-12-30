@@ -9,13 +9,22 @@ autoinstall:
     allow-pw: true
   packages:
     - qemu-guest-agent
+    - build-essential
+    - curl
+    - file
+    - git
+    - zsh
+    - git-core
+    - fonts-powerline
+    - silversearcher-ag
+    - neovim
   storage:
     layout:
       name: direct
     swap:
       size: 0
   user-data:
-    package_upgrade: false
+    package_upgrade: true
     timezone: Europe/Amsterdam
     users:
       - name: rene

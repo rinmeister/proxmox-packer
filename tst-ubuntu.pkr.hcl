@@ -15,7 +15,7 @@ variable "proxmox_username" {
 
 variable "proxmox_password" {
   type    = string
-  default = "***"
+  default = "BattleOfHastings!@"
 }
 
 variable "ubuntu_iso_file" {
@@ -25,20 +25,19 @@ variable "ubuntu_iso_file" {
 
 variable "proxmox_url" {
   type    = string
-  default = "https://1.2.3.4:8006/api2/json"
+  default = "https://10.1.0.129:8006/api2/json"
 }
 variable "ssh_user" {
   type    = string
-  default = "****"
+  default = "rene"
 } 
 variable "ssh_pass" {
   type    = string
-  default = "****"
+  default = "opgero8t"
 } 
 
 source "proxmox" "ubuntu-server-ci" {
-  boot_command = ["<esc><wait><esc><wait><f6><wait><esc><wait>",
-  "<bs><bs><bs><bs><bs>", "autoinstall ds=nocloud-net;s=http://1.2.3.4:8000/ ", "--- <enter>"]
+  boot_command = ["<esc><wait><esc><wait><f6><wait><esc><wait>", "<bs><bs><bs><bs><bs>", "autoinstall ds=nocloud-net;s=http://10.1.0.129:8000/ ", "--- <enter>"]
   boot_wait    = "6s"
   disks {
     disk_size         = "20G"
@@ -56,7 +55,7 @@ source "proxmox" "ubuntu-server-ci" {
     model    = "virtio"
     vlan_tag = "220"
   }
-  node          = "testnode"
+  node          = "voldemort"
   password      = "${var.proxmox_password}"
   proxmox_url   = "${var.proxmox_url}"
   ssh_password  = "${var.ssh_pass}"
